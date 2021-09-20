@@ -11,3 +11,7 @@ class Pellet(Element):
             random.randrange(1, (frame_size_x//10)) * 10, 
             random.randrange(1, (frame_size_y//10)) * 10
             )
+        self.active = True
+
+    def eat(self):
+        self.active = False

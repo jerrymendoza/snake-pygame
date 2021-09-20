@@ -51,7 +51,7 @@ fps_controller = pygame.time.Clock()
 snake = player.Snake()
 food = supplies.Pellet()
 pencil = tools.Pencil(game_window)
-food_spawn = True
+
 
 direction = 'RIGHT'
 change_to = direction
@@ -119,16 +119,12 @@ while True:
         direction = 'RIGHT'
 
 
-    # Moving the snake
-    snake.update(direction)
-
-    # Snake body growing mechanism
-    food_spawn, score = snake.grow(food, food_spawn, score)
+    # Moving the snake and grow
+    score = snake.update(direction, food, score)
 
     # Spawning food on the screen
-    if not food_spawn:
+    if not food.active:
         food = supplies.Pellet()
-    food_spawn = True
 
     # GFX
     game_window.fill(black)
