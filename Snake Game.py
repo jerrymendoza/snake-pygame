@@ -6,6 +6,7 @@ Made with PyGame
 import pygame, sys, time, random
 from elements import player, supplies
 from core import tools
+from themes.normal import *
 
 # Difficulty settings
 # Easy      ->  10
@@ -33,14 +34,6 @@ else:
 # Initialise game window
 pygame.display.set_caption('Snake Eater')
 game_window = pygame.display.set_mode((frame_size_x, frame_size_y))
-
-
-# Colors (R, G, B)
-black = pygame.Color(0, 0, 0)
-white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
 
 
 # FPS (frames per second) controller
