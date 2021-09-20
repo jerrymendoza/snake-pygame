@@ -5,6 +5,7 @@ Made with PyGame
 
 import pygame, sys, time, random
 from elements import player, supplies
+from core import tools
 
 # Difficulty settings
 # Easy      ->  10
@@ -49,7 +50,7 @@ fps_controller = pygame.time.Clock()
 # Game variables
 snake = player.Snake()
 food = supplies.Pellet()
-
+pencil = tools.Pencil(game_window)
 food_spawn = True
 
 direction = 'RIGHT'
@@ -131,14 +132,13 @@ while True:
 
     # GFX
     game_window.fill(black)
-    for pos in snake.body:
-        # Snake body
-        # .draw.rect(play_surface, color, xy-coordinate)
-        # xy-coordinate -> .Rect(x, y, size_x, size_y)
-        pygame.draw.rect(game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
+
+    # Snake body
+    pencil.draw(snake.body, green)
 
     # Snake food
-    pygame.draw.rect(game_window, white, pygame.Rect(food.x, food.y, 10, 10))
+    pencil.draw(food, white)
+
 
     # Game Over conditions
     # Getting out of bounds
