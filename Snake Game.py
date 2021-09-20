@@ -4,7 +4,7 @@ Made with PyGame
 """
 
 import pygame, sys, time, random
-
+from elements import player
 
 # Difficulty settings
 # Easy      ->  10
@@ -47,8 +47,7 @@ fps_controller = pygame.time.Clock()
 
 
 # Game variables
-snake_pos = [100, 50]
-snake_body = [[100, 50], [100-10, 50], [100-(2*10), 50]]
+snake = player.Snake()
 
 food_pos = [random.randrange(1, (frame_size_x//10)) * 10, random.randrange(1, (frame_size_y//10)) * 10]
 food_spawn = True
@@ -120,21 +119,21 @@ while True:
 
     # Moving the snake
     if direction == 'UP':
-        snake_pos[1] -= 10
+        snake.position[1] -= 10
     if direction == 'DOWN':
-        snake_pos[1] += 10
+        snake.position[1] += 10
     if direction == 'LEFT':
-        snake_pos[0] -= 10
+        snake.position[0] -= 10
     if direction == 'RIGHT':
-        snake_pos[0] += 10
+        snake.position[0] += 10
 
     # Snake body growing mechanism
-    snake_body.insert(0, list(snake_pos))
-    if snake_pos[0] == food_pos[0] and snake_pos[1] == food_pos[1]:
+    snake.body.insert(0, list(snake.position))
+    if snake.position[0] == food_pos[0] and snake.position[1] == food_pos[1]:
         score += 1
         food_spawn = False
     else:
-        snake_body.pop()
+        snake.body.pop()
 
     # Spawning food on the screen
     if not food_spawn:
@@ -143,7 +142,7 @@ while True:
 
     # GFX
     game_window.fill(black)
-    for pos in snake_body:
+    for pos in snake.body:
         # Snake body
         # .draw.rect(play_surface, color, xy-coordinate)
         # xy-coordinate -> .Rect(x, y, size_x, size_y)
@@ -154,13 +153,13 @@ while True:
 
     # Game Over conditions
     # Getting out of bounds
-    if snake_pos[0] < 0 or snake_pos[0] > frame_size_x-10:
+    if snake.position[0] < 0 or snake.position[0] > frame_size_x-10:
         game_over()
-    if snake_pos[1] < 0 or snake_pos[1] > frame_size_y-10:
+    if snake.position[1] < 0 or snake.position[1] > frame_size_y-10:
         game_over()
     # Touching the snake body
-    for block in snake_body[1:]:
-        if snake_pos[0] == block[0] and snake_pos[1] == block[1]:
+    for block in snake.body[1:]:
+        if snake.position[0] == block[0] and snake.position[1] == block[1]:
             game_over()
 
     show_score(1, white, 'consolas', 20)
