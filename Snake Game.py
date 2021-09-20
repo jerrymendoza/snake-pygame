@@ -117,23 +117,12 @@ while True:
     if change_to == 'RIGHT' and direction != 'LEFT':
         direction = 'RIGHT'
 
+
     # Moving the snake
-    if direction == 'UP':
-        snake.position[1] -= 10
-    if direction == 'DOWN':
-        snake.position[1] += 10
-    if direction == 'LEFT':
-        snake.position[0] -= 10
-    if direction == 'RIGHT':
-        snake.position[0] += 10
+    snake.update(direction)
 
     # Snake body growing mechanism
-    snake.body.insert(0, list(snake.position))
-    if snake.position[0] == food_pos[0] and snake.position[1] == food_pos[1]:
-        score += 1
-        food_spawn = False
-    else:
-        snake.body.pop()
+    food_spawn, score = snake.grow(food_pos, food_spawn, score)
 
     # Spawning food on the screen
     if not food_spawn:
