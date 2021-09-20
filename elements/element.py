@@ -7,3 +7,8 @@ class Element:
     @property
     def position(self):
         return [self.x, self.y]
+
+    def collision(self, element):
+        if self.position == element.position:
+            return True
+        return False

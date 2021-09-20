@@ -22,7 +22,7 @@ class Snake(Element):
         
     def grow(self, food, food_spawn, score):
         self.body.insert(0, list(self.position))
-        if self.x == food.x and self.y == food.y:
+        if self.collision(food):
             score += 1
             food_spawn = False
         else:
