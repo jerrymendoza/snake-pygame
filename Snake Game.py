@@ -3,8 +3,8 @@ Snake Eater
 Made with PyGame
 """
 
-import pygame, sys, time, random
-from elements import player, supplies
+import pygame, sys
+from elements import player, supplies, label
 from core import tools, prepare
 from themes.normal import *
 
@@ -16,50 +16,12 @@ from themes.normal import *
 # Impossible->  120
 difficulty = 25
 
-# Window size
-frame_size_x = 720
-frame_size_y = 480
-
+game_over_label = label.GameOverText(prepare.game_window, prepare.WINSIZE)
 
 # Game variables
 snake = player.Snake()
 food = supplies.Pellet()
 pencil = tools.Pencil(prepare.game_window)
-
-
-direction = 'RIGHT'
-change_to = direction
-
-score = 0
-
-
-# Game Over
-def game_over():
-    my_font = pygame.font.SysFont('times new roman', 90)
-    game_over_surface = my_font.render('YOU DIED', True, red)
-    game_over_rect = game_over_surface.get_rect()
-    game_over_rect.midtop = (frame_size_x/2, frame_size_y/4)
-    prepare.game_window.fill(black)
-    prepare.game_window.blit(game_over_surface, game_over_rect)
-    show_score(0, red, 'times', 20)
-    pygame.display.flip()
-    time.sleep(3)
-    pygame.quit()
-    sys.exit()
-
-
-# Score
-def show_score(choice, color, font, size):
-    score_font = pygame.font.SysFont(font, size)
-    score_surface = score_font.render('Score : ' + str(score), True, color)
-    score_rect = score_surface.get_rect()
-    if choice == 1:
-        score_rect.midtop = (frame_size_x/10, 15)
-    else:
-        score_rect.midtop = (frame_size_x/2, frame_size_y/1.25)
-    prepare.game_window.blit(score_surface, score_rect)
-    # pygame.display.flip()
-
 
 # Main logic
 while True:
@@ -76,7 +38,7 @@ while True:
     snake.set_direction()
 
     # Moving the snake and grow
-    score = snake.update(food, score)
+    snake.update(food)
 
     # Spawning food on the screen
     if not food.active:
@@ -91,18 +53,10 @@ while True:
     # Snake food
     pencil.draw(food, white)
 
-
     # Game Over conditions
-    # Getting out of bounds
-    if snake.x < 0 or snake.x > frame_size_x-10:
-        game_over()
-    if snake.y < 0 or snake.y > frame_size_y-10:
-        game_over()
-    # Touching the snake body
-    if snake.body_collision():
-        game_over()
+    if snake.body_collision() or snake.border_collision(*prepare.WINSIZE):
+        game_over_label.draw(prepare.game_window)
 
-    show_score(1, white, 'consolas', 20)
     # Refresh game screen
     pygame.display.update()
     # Refresh rate

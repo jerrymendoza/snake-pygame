@@ -7,10 +7,11 @@ class Snake(Element):
         self.body = [[100, 50], [100-10, 50], [100-(2*10), 50]]
         self.direction = 'RIGHT'
         self.change_to = self.direction
+        self.score = 0
 
-    def update(self, food, score):
+    def update(self, food):
         self._move(self.direction)
-        return self._grow(food, score)
+        self._grow(food)
 
         
     def _move(self, direction):
@@ -23,18 +24,24 @@ class Snake(Element):
         if direction == 'RIGHT':
             self.x += 10
         
-    def _grow(self, food, score):
+    def _grow(self, food):
         self.body.insert(0, list(self.position))
         if self.collision(food):
-            score += 1
+            self.score += 1
             food.eat()
         else:
             self.body.pop()
-        return score
 
     def body_collision(self):
         for block in self.body[1:]:
             return self.x == block[0] and self.y == block[1]
+    
+    def border_collision(self, frame_size_x, frame_size_y):
+        if self.x < 0 or self.x > frame_size_x-10:
+            return True
+        if self.y < 0 or self.y > frame_size_y-10:
+            return True
+        return False
 
     def set_change(self, event):
 

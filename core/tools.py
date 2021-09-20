@@ -1,5 +1,7 @@
-import pygame as pygame
-
+import pygame
+import sys
+import time
+from themes.normal import *
 
 class Pencil:
     def __init__(self, game_window):
