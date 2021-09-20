@@ -142,13 +142,13 @@ while True:
 
     # Game Over conditions
     # Getting out of bounds
-    if snake.position[0] < 0 or snake.position[0] > frame_size_x-10:
+    if snake.x < 0 or snake.x > frame_size_x-10:
         game_over()
-    if snake.position[1] < 0 or snake.position[1] > frame_size_y-10:
+    if snake.y < 0 or snake.y > frame_size_y-10:
         game_over()
     # Touching the snake body
     for block in snake.body[1:]:
-        if snake.position[0] == block[0] and snake.position[1] == block[1]:
+        if snake.x == block[0] and snake.y == block[1]:
             game_over()
 
     show_score(1, white, 'consolas', 20)
