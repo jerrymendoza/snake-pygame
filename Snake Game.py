@@ -5,7 +5,7 @@ Made with PyGame
 
 import pygame, sys, time, random
 from elements import player, supplies
-from core import tools
+from core import tools, prepare
 from themes.normal import *
 
 # Difficulty settings
@@ -20,30 +20,11 @@ difficulty = 25
 frame_size_x = 720
 frame_size_y = 480
 
-# Checks for errors encountered
-check_errors = pygame.init()
-# pygame.init() example output -> (6, 0)
-# second number in tuple gives number of errors
-if check_errors[1] > 0:
-    print(f'[!] Had {check_errors[1]} errors when initialising game, exiting...')
-    sys.exit(-1)
-else:
-    print('[+] Game successfully initialised')
-
-
-# Initialise game window
-pygame.display.set_caption('Snake Eater')
-game_window = pygame.display.set_mode((frame_size_x, frame_size_y))
-
-
-# FPS (frames per second) controller
-fps_controller = pygame.time.Clock()
-
 
 # Game variables
 snake = player.Snake()
 food = supplies.Pellet()
-pencil = tools.Pencil(game_window)
+pencil = tools.Pencil(prepare.game_window)
 
 
 direction = 'RIGHT'
@@ -58,8 +39,8 @@ def game_over():
     game_over_surface = my_font.render('YOU DIED', True, red)
     game_over_rect = game_over_surface.get_rect()
     game_over_rect.midtop = (frame_size_x/2, frame_size_y/4)
-    game_window.fill(black)
-    game_window.blit(game_over_surface, game_over_rect)
+    prepare.game_window.fill(black)
+    prepare.game_window.blit(game_over_surface, game_over_rect)
     show_score(0, red, 'times', 20)
     pygame.display.flip()
     time.sleep(3)
@@ -76,7 +57,7 @@ def show_score(choice, color, font, size):
         score_rect.midtop = (frame_size_x/10, 15)
     else:
         score_rect.midtop = (frame_size_x/2, frame_size_y/1.25)
-    game_window.blit(score_surface, score_rect)
+    prepare.game_window.blit(score_surface, score_rect)
     # pygame.display.flip()
 
 
@@ -120,7 +101,7 @@ while True:
         food = supplies.Pellet()
 
     # GFX
-    game_window.fill(black)
+    prepare.game_window.fill(black)
 
     # Snake body
     pencil.draw(snake.body, green)
@@ -136,12 +117,11 @@ while True:
     if snake.y < 0 or snake.y > frame_size_y-10:
         game_over()
     # Touching the snake body
-    for block in snake.body[1:]:
-        if snake.x == block[0] and snake.y == block[1]:
-            game_over()
+    if snake.body_collision():
+        game_over()
 
     show_score(1, white, 'consolas', 20)
     # Refresh game screen
     pygame.display.update()
     # Refresh rate
-    fps_controller.tick(difficulty)
+    prepare.clock.tick(difficulty)
