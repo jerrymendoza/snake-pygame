@@ -20,9 +20,9 @@ class Snake(Element):
         if direction == 'RIGHT':
             self.x += 10
         
-    def grow(self, food_pos, food_spawn, score):
+    def grow(self, food, food_spawn, score):
         self.body.insert(0, list(self.position))
-        if self.x == food_pos[0] and self.y == food_pos[1]:
+        if self.x == food.x and self.y == food.y:
             score += 1
             food_spawn = False
         else:

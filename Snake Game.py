@@ -4,7 +4,7 @@ Made with PyGame
 """
 
 import pygame, sys, time, random
-from elements import player
+from elements import player, supplies
 
 # Difficulty settings
 # Easy      ->  10
@@ -48,8 +48,8 @@ fps_controller = pygame.time.Clock()
 
 # Game variables
 snake = player.Snake()
+food = supplies.Pellet()
 
-food_pos = [random.randrange(1, (frame_size_x//10)) * 10, random.randrange(1, (frame_size_y//10)) * 10]
 food_spawn = True
 
 direction = 'RIGHT'
@@ -122,11 +122,11 @@ while True:
     snake.update(direction)
 
     # Snake body growing mechanism
-    food_spawn, score = snake.grow(food_pos, food_spawn, score)
+    food_spawn, score = snake.grow(food, food_spawn, score)
 
     # Spawning food on the screen
     if not food_spawn:
-        food_pos = [random.randrange(1, (frame_size_x//10)) * 10, random.randrange(1, (frame_size_y//10)) * 10]
+        food = supplies.Pellet()
     food_spawn = True
 
     # GFX
@@ -138,7 +138,7 @@ while True:
         pygame.draw.rect(game_window, green, pygame.Rect(pos[0], pos[1], 10, 10))
 
     # Snake food
-    pygame.draw.rect(game_window, white, pygame.Rect(food_pos[0], food_pos[1], 10, 10))
+    pygame.draw.rect(game_window, white, pygame.Rect(food.x, food.y, 10, 10))
 
     # Game Over conditions
     # Getting out of bounds
