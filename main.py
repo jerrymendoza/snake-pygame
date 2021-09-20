@@ -17,7 +17,7 @@ from themes.normal import *
 difficulty = 25
 
 game_over_label = label.GameOverText(prepare.game_window, prepare.WINSIZE)
-
+score_label = label.ScoreText(prepare.game_window, prepare.WINSIZE)
 # Game variables
 snake = player.Snake()
 food = supplies.Pellet()
@@ -57,6 +57,7 @@ while True:
     if snake.body_collision() or snake.border_collision(*prepare.WINSIZE):
         game_over_label.draw(prepare.game_window)
 
+    score_label.draw(1, prepare.game_window, 20, white, snake.score)
     # Refresh game screen
     pygame.display.update()
     # Refresh rate
